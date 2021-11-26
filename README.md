@@ -31,5 +31,8 @@ Assign your metadata file to a variable
 ```{bash}
 METADATA="/home/user/PROJECT_NAME/metadata-file.tsv"
 ```
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 2ab24e02c439067cf309186c79a373fbb03d5981
