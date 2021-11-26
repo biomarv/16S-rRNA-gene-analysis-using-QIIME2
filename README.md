@@ -1,5 +1,9 @@
 # Qiime2 pipeline MetaBac Lab
 
+## Introduction
+
+Since we are using Qiime2 in the command line interface, basic knowledge about the shell is required. There are several tutorials out there (i.e. <http://linuxcommand.org/lc3_learning_the_shell.php>) 
+
 
 ## Rawdata
 
@@ -31,8 +35,3 @@ Assign your metadata file to a variable
 ```{bash}
 METADATA="/home/user/PROJECT_NAME/metadata-file.tsv"
 ```
-<<<<<<< HEAD
-
-
-=======
->>>>>>> 2ab24e02c439067cf309186c79a373fbb03d5981
