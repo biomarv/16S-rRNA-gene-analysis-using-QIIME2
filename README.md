@@ -6,12 +6,23 @@ Since we are using Qiime2 in the command line interface, basic knowledge about t
 
 ## Rawdata
 
-In general, data from the sequencing facility comes in already demultiplexed, barcodes are already removed. Beside our files of interest, `.fastq.gz` (compressed fasta files with Quality information), there are also already fastqc reports for each file stored as `.html` (with its corresponding `.zip` folders).For paired-end data, this is how your files should look like:
+In general, data from the sequencing facility comes already demultiplexed, barcodes are already removed. Beside our files of interest, `.fastq.gz` (compressed fasta files with Quality information), sometimes already fastqc-processed files a delivered, too. Thus, a fastqc-report stored as n `.html` file (with its corresponding `.zip` folders) is provided. For paired-end data, this is how your files should look like:
 
 ```{bash}
-J34142_S41_L001_R2_001.fastq.gz
+J34142_S41_L001_R1_001.fastq.gz
 J34142_S41_L001_R2_001.fastq.gz
 ```
+The underscore separated filename is composed of:
+
+| Element | Description |
+| :------ | :---------- |
+| J34142 | Samplename provided by the samplesheet. This is mostly given by the sequencing facility |
+| S41 | Sample number is based on the sample order in the samplesheet |
+| L001 | Lane number; always the same | 
+| R1 | Read 1. If paired-end reads, there will be a read 2. 
+| 001 | Last segment: alway 001 |
+
+
 
 ## Set the environment 
 
