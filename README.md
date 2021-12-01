@@ -4,6 +4,18 @@
 
 Since we are using Qiime2 in the command line interface, basic knowledge about the shell is required. There are several tutorials out there to get into it (i.e. <http://linuxcommand.org/lc3_learning_the_shell.php>). When working with bioinformatical data, command line tools are very powerful and makes data processing a lot more effective than using a graphical interface. 
 
+## Set up your working directory
+
+Create project folder in your home directory. In your project folder create a folder named i.e. `raw_data` for the .fq files. Then change into the project folder and check with the `ls` command the content.
+
+```{bash}
+mkdir ~/PROJECT_NAME
+mkdir ~/PROJECT_NAME/raw_data 
+cd PROJECT_NAME/
+ls
+```
+
+
 ## Rawdata
 
 In general, data from the sequencing facility comes already demultiplexed, barcodes are already removed. Beside our files of interest, `.fastq.gz` (compressed fasta files with Quality information), sometimes already fastqc-processed files a delivered, too. Thus, a fastqc-report stored as n `.html` file (with its corresponding `.zip` folders) is provided. For paired-end data, we should find two files differing only in the read no.:
@@ -33,7 +45,7 @@ When checking the quality reports of FastQC, one must be aware of the origin and
 
 ## MultiQC
 
-Additionally, you can check all fastq-reports with multiQC, which incorporates all reports into a single report. By moving into the report-folder multiqc only needs an input folder as an argument. For further options use `multiqc -h`
+Additionally, you can check all fastQC-reports with multiQC, which incorporates all reports into a single report. By moving into the report-folder multiqc only needs an input folder as an argument. For further options use `multiqc -h`
 
 ```{bash}
 multiqc .
@@ -41,18 +53,15 @@ multiqc .
 
 ## Set the environment 
 
+To activate the QIIME 2 environment use the following code:
+
 ```{bash}
 conda activate qiime2-2021.2
 ```
+To deactivate the environment use `conda deactivate`
 
-## Prepare your files
 
-Create project folder and change into it
 
-```{bash}
-mkdir PROJECT_NAME
-cd PROJECT_NAME
-```
 
 Assign your metadata file to a variable. This file will be used more often, so using a variable comes in handy. The content of variable is accessed with a `$` prefix. 
 
