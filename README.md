@@ -22,7 +22,7 @@ The underscore separated filename is composed of:
 | R1 | Read 1. If paired-end reads, there will be a read 2. 
 | 001 | Last segment: alway 001 |
 
-## Fastq reports
+## FastQC reports
 
 When checking the quality reports of FastQC, one must be aware of the origin and processing of the data. The evaluation of the quality is somewhat biased to a purpose. Looking into an `.html` report, FastQC comes with 11 checkpoints, hightling if failed or passed not considering the input data. Starting with `basic statistics` Encoding: Illumina 1.9 tells us, quality format is encoded in `Phred+33`. Total Sequence count should be congruent in forward and reverse reads. 
 
