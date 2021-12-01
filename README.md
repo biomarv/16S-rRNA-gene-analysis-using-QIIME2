@@ -26,14 +26,10 @@ The underscore separated filename is composed of:
 
 When checking the quality reports of FastQC, one must be aware of the origin and processing of the data. The evaluation of the quality is somewhat biased to a purpose. Looking into an `.html` report, FastQC comes with 11 checkpoints, hightling if failed or passed not considering the input data. Starting with `basic statistics` Encoding: Illumina 1.9 tells us, quality format is encoded in `Phred+33`. Total Sequence count should be congruent in forward and reverse reads. 
 
-+ Sequence length distribution
-Should show one peak.
-+ Per sequence GC content content
-Sharp shoulder may indicate existing adapters, primer or rRNA. 
-+ Per base sequence content
-Nucleotide frequency for each base at each position. As each sequence, in 16S amplicon sequencing,  
-+ Sequence duplication level and  Overrepresented sequences
-For 16S amplicon sequencing those two criteria should not be considered as valuable quality parameters since we are sequencing one gene. Thus, observing similar sequences is expected. 
++ Sequence length distribution: Should show one peak.
++ Per sequence GC content content: Sharp shoulder may indicate existing adapters, primer or rRNA. 
++ Per base sequence content: Nucleotide frequency for each base at each position. As each sequence, in 16S amplicon sequencing.  
++ Sequence duplication level and  Overrepresented sequences: For 16S amplicon sequencing those two criteria should not be considered as valuable quality parameters since we are sequencing one gene. Thus, observing similar sequences is expected. 
 
 ## MultiQC
 
