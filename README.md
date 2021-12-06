@@ -32,9 +32,9 @@ The underscore separated filename is composed of:
 | S41 | Sample number is based on the sample order in the samplesheet |
 | L001 | Lane number; always the same | 
 | R1 | Read 1. If paired-end reads, there will be a read 2. 
-| 001 | Last segment: alway 001 |
+| 001 | Last segment: always 001 |
 
-## FastQC reports
+## FastQC
 
 When checking the quality reports of FastQC, one must be aware of the origin and processing of the data. The evaluation of the quality is somewhat biased to a purpose. Looking into an `.html` report, FastQC comes with 11 checkpoints, hightling if failed or passed not considering the input data. Starting with `basic statistics` Encoding: Illumina 1.9 tells us, quality format is encoded in `Phred+33`. Total Sequence count should be congruent in forward and reverse reads. 
 
@@ -68,5 +68,20 @@ Assign your metadata file to a variable. This file will be used more often, so u
 ```{bash}
 METADATA="/home/user/PROJECT_NAME/metadata-file.tsv"
 echo $METADATA
+`ls`
 ```
 
+## QIME2
+
+To find out more about QIIME2 use the well documented source <https://docs.qiime2.org/2021.8/> with several useful tutorials. Clearly, we are using QIIME2 in the command-line interface (CLI), although there is a graphical use available. 
+Indispensible, is knowledge about the difference between `.qza` and `.qzv`, the qiime artifacts. The ladder describes any file content that can be visualized. The `.qza` ending is a file were data is stored, processed in and QIIME knows about type and format. While in bioinformatics we are dealing with lots of different file types which one needs handle, this is one advantage of QIIME, so the user can focus on data processing. 
+There are plenty tools to manipulate data and the first to begin with is importan our data into a QIIME2 artifact:
+
+``` {bash}
+mkdir qiime_files
+qiime tools import \
+    --type SampleData[PairedEndSequencesWithQuality] \
+    --input-format CasavaOneEightSingleLanePerSampleDirFmt \
+    --input-path $HOME/PROJECT_NAME/raw_data \
+    --output-path demux-paired-end.qza
+```
