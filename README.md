@@ -87,14 +87,11 @@ qiime tools import \
     --input-path $HOME/PROJECT_NAME/raw_data \
     --output-path /qiime_files/demux-paired-end.qza
 ```
-
 The tools package has plenty functions, to find out more about its function you can use
-
 ``` {bash}
 qiime tools --help
 ```
-
 The tool needs three required inputs: the `--input-path` to tell the program were the data is located, the `--output-path` were to output the QIIME2 artifact and the `--type` of data. In this case, we are dealing with paired-end sequencing data which also has qulity information. There are several data types which we can look up using:
-´´´ {bash}
+``` {bash}
 qiime tools import --show-importable-types
 ```
