@@ -4,7 +4,7 @@
 
 Since we are using Qiime2 in the command line interface, basic knowledge about the shell is required. There are several tutorials out there to get into it (i.e. <http://linuxcommand.org/lc3_learning_the_shell.php>). When working with bioinformatical data, command line tools are very powerful and makes data processing a lot more effective than using a graphical interface. 
 
-## Set up your working directory
+### Set up your working directory
 
 Create project folder in your home directory. In your project folder create a folder named i.e. `raw_data` for the .fq files. Then change into the project folder and check with the `ls` command the content.
 
@@ -16,7 +16,7 @@ ls
 ```
 
 
-## Rawdata
+### Rawdata
 
 In general, data from the sequencing facility comes already demultiplexed, barcodes are already removed. Beside our files of interest, `.fastq.gz` (compressed fasta files with Quality information), sometimes already fastqc-processed files a delivered, too. Thus, a fastqc-report stored as n `.html` file (with its corresponding `.zip` folders) is provided. For paired-end data, we should find two files differing only in the read no.:
 
@@ -34,7 +34,7 @@ The underscore separated filename is composed of:
 | R1 | Read 1. If paired-end reads, there will be a read 2. 
 | 001 | Last segment: always 001 |
 
-## FastQC
+### FastQC
 
 When checking the quality reports of FastQC, one must be aware of the origin and processing of the data. The evaluation of the quality is somewhat biased to a purpose. Looking into an `.html` report, FastQC comes with 11 checkpoints, hightling if failed or passed not considering the input data. Starting with `basic statistics` Encoding: Illumina 1.9 tells us, quality format is encoded in `Phred+33`. Total Sequence count should be congruent in forward and reverse reads. 
 
@@ -43,7 +43,7 @@ When checking the quality reports of FastQC, one must be aware of the origin and
 + Per base sequence content: Nucleotide frequency for each base at each position. As each sequence, in 16S amplicon sequencing.  
 + Sequence duplication level and  Overrepresented sequences: For 16S amplicon sequencing those two criteria should not be considered as valuable quality parameters since we are sequencing one gene. Thus, observing similar sequences is expected. 
 
-## MultiQC
+### MultiQC
 
 Additionally, you can check all fastQC-reports with multiQC, which incorporates all reports into a single report. By moving into the report-folder multiqc only needs an input folder as an argument. For further options use `multiqc -h`
 
@@ -51,7 +51,7 @@ Additionally, you can check all fastQC-reports with multiQC, which incorporates 
 multiqc .
 ```
 
-## Set the environment 
+### Set the environment 
 
 To activate the QIIME 2 environment use the following code:
 
@@ -77,11 +77,24 @@ To find out more about QIIME2 use the well documented source <https://docs.qiime
 Indispensible, is knowledge about the difference between `.qza` and `.qzv`, the qiime artifacts. The ladder describes any file content that can be visualized. The `.qza` ending is a file were data is stored, processed in and QIIME knows about type and format. While in bioinformatics we are dealing with lots of different file types which one needs handle, this is one advantage of QIIME, so the user can focus on data processing. 
 There are plenty tools to manipulate data and the first to begin with is importan our data into a QIIME2 artifact:
 
+### Import data
+
 ``` {bash}
 mkdir qiime_files
 qiime tools import \
     --type SampleData[PairedEndSequencesWithQuality] \
     --input-format CasavaOneEightSingleLanePerSampleDirFmt \
     --input-path $HOME/PROJECT_NAME/raw_data \
-    --output-path demux-paired-end.qza
+    --output-path /qiime_files/demux-paired-end.qza
+```
+
+The tools package has plenty functions, to find out more about its function you can use
+
+``` {bash}
+qiime tools --help
+```
+
+The tool needs three required inputs: the `--input-path` to tell the program were the data is located, the `--output-path` were to output the QIIME2 artifact and the `--type` of data. In this case, we are dealing with paired-end sequencing data which also has qulity information. There are several data types which we can look up using:
+´´´ {bash}
+qiime tools import --show-importable-types
 ```
