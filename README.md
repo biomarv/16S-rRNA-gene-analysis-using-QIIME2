@@ -93,14 +93,16 @@ qiime tools --help
 ```
 The tool needs three required inputs: the `--input-path` to tell the program were the data is located, the `--output-path` were to output the QIIME2 artifact and the `--type` of data. In this case, we are dealing with paired-end sequencing data which also has qulity information. There are several data types which we can look up using:
 ``` {bash}
-qiime tools import --show-importable-types
+qiime tools import \
+    --show-importable-types
 ```
 Additionally, the `--input-format` option is provided, which tells QIIME2 the files are in the format explained in the *rawdata* section.
 
 Check out the file type which has been imported:
 ```{bash}
 cd qiime_files
-qiime tools peek demux_paired_end.qza
+qiime tools peek \
+    demux_paired_end.qza
 ```
 
 ### Summarize data and visualization
@@ -111,7 +113,8 @@ qiime demux summarize \
     --i-data demux_paired_end.qza \
     --o-visualization demux_paired_end.qzv
 
-qiime tools view demux_paired_end.qzv
+qiime tools view \
+    demux_paired_end.qzv
 ```
 This file gives you information about general sequence distribution and also an interactive quality plot.
 
@@ -132,7 +135,7 @@ qiime cutadapt trim-paired \
 ```
 To find out more about the primer options of this command have look at `qiime cutadapt trim-primer --help`. In this example data set the V3/V4 region of the 16S rRNA was used. The additional two primers are the reversed complements of the V3/V4 primer pair. The option `--p-discard-untrimmed` excludes reads in which no primers were found. The last option redirects the standard output (stdout) into a logfile. The output can also be visualized with the `demux summarize` command. 
 
-### Denoising
+## Denoising
 
 To denoise the reads qiime offers two packages, deblur and DADA2. Both pipelines end up with amplicon sequence variants (ASV). In this tutorial the DADA2 package will be used. Your can find out more about the package in this [tutorial](https://benjjneb.github.io/dada2/) or have a look at the [publication](https://pubmed.ncbi.nlm.nih.gov/27214047/). The general purpose of both is to correct for errors, filter phiX reads and chimeric sequences. To set the `trunc` option one has to inspect the quality plot from the `demux_cutadapt.qza` file. 
 
@@ -174,7 +177,7 @@ For each sample-id the following stats are available:
 + non-chimeric: absoulute no. reads left from previous filter which are non-chimeric 
 + percentage of input non-chimeric: in %
 
-Based on certain criteria, DADA2 declares representative sequences for wich a `Feature ID`, the `Sequence length` and the actual `Sequence` is denotetd. To visualize the representative sequences output:
+Based on certain criteria, DADA2 declares representative sequences for which a `Feature ID`, the `Sequence length` and the actual `Sequence` is denotetd. To visualize the representative sequences output:
 ```{bash}
 qiime feature-table tabulate-seqs \
     --i-data rep-seqs.qza \
@@ -182,7 +185,7 @@ qiime feature-table tabulate-seqs \
 ```
 Beside some general statistics, by clicking on the sequence, the sequence will be aligned using BLAST algorithm vie NCBI.
 
-The last output file is a feature count table, which is a very important table for further analysis. It is a two dimensional table with samples as rows and features as columns. 
+The last output file is a feature count table, which is a very important table for further analysis. It is a two dimensional table with samples as rows and features as columns.  
 
 | Sample  | Feature_1 | Feature_2 | [...] |
 | :--- | :--- | :--- | :--- |
@@ -190,3 +193,36 @@ The last output file is a feature count table, which is a very important table f
 | Sample_2 | 20 | 200 | [...] |
 
 The features are represented by the rep-seqs.qza were all sequences are stored in, which incorporate the *unique* bacteria (feature). 
+
+## Taxonomy assignment
+
+Now a part of the preprocessing is done. The `dada2_table` is somehow our key file to work with. One of the next steps is to taxonomacally classify the ASVs. By doing that, we use the [SILVA](https://www.arb-silva.de/) databasa for classifying our ASVs.  
+
+The database is downloaded via the following command from QIIME2 website. This downloads the reference sequences for our reps-seqs `silva-138-99-seqs.qza` to classify and the corresponding taxonomy information `silva-138-99-tax.qza`.
+
+``` {bash}
+wget https://data.qiime2.org/2020.8/common/silva-138-99-seqs.qza
+wget https://data.qiime2.org/2020.8/common/silva-138-99-tax.qza
+``` 
+If you work on our remote maschine your can find those files in the following directory:
+
+``` {bash}
+ls /db/silva/
+```
+or using the `$SILVA_DB` variable.
+``` {bash}
+ls $SILVA_DB
+```
+### Extract reference sequences
+
+The following function `extract reads`from the `feature-classifier`package trims the silva-seq around the givin primer sequences (note that these are the same oligos used in cutadapt) for 16S rRNA V3/V4 region. Additionally, max and min lenght are given. We output the trimmed reference sequences in our qiime_files directory.
+
+``` {bash}
+qiime feature-classifier extract-reads \
+    --i-sequences $SILVA_DB/silva-138-99-seqs.qza \
+    --p-f-primer CCTACGGGAGGCAGCAG \
+    --p-r-primer GGACTACHVGGGTWTCTAAT \
+    --p-max-length 505 \
+    --p-min-length 250 \
+    --o-reads ref-seqs.qza
+```
