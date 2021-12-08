@@ -198,24 +198,24 @@ The features are represented by the rep-seqs.qza were all sequences are stored i
 
 Now a part of the preprocessing is done. The `dada2_table` is somehow our key file to work with. One of the next steps is to taxonomacally classify the ASVs. By doing that, we use the [SILVA](https://www.arb-silva.de/) databasa for classifying our ASVs.  
 
-The database is downloaded via the following command from QIIME2 website. This downloads the reference sequences for our reps-seqs `silva-138-99-seqs.qza` to classify and the corresponding taxonomy information `silva-138-99-tax.qza`.
+The database is downloaded via the following command from QIIME2 website. This downloads the full length reference sequences for   `silva-138-99-seqs.qza` to classify and the corresponding taxonomy information `silva-138-99-tax.qza`.
 
 ``` {bash}
 wget https://data.qiime2.org/2020.8/common/silva-138-99-seqs.qza
 wget https://data.qiime2.org/2020.8/common/silva-138-99-tax.qza
 ``` 
-If you work on our remote maschine your can find those files in the following directory:
+If you work on our remote maschine you can find those files in the following directory:
 
 ``` {bash}
 ls /db/silva/
 ```
-or using the `$SILVA_DB` variable.
+or using the `$SILVA_DB` variable which conveniently stores the path to the database.
 ``` {bash}
 ls $SILVA_DB
 ```
 ### Extract reference sequences
 
-The following function `extract reads`from the `feature-classifier`package trims the silva-seq around the givin primer sequences (note that these are the same oligos used in cutadapt) for 16S rRNA V3/V4 region. Additionally, max and min lenght are given. We output the trimmed reference sequences in our qiime_files directory.
+The following function `extract reads`from the `feature-classifier`package trims the silva-seq around the givin primer sequences (note that these are the same oligos used in cutadapt) for 16S rRNA V3/V4 region. Extracting the region of interest and use those sequence with the Naive Bayes classifier has been found out to be an improvement. Additionally, max and min lenght are given to exclude sequences which are outside of the anticipated length. We output the trimmed reference sequences in our qiime_files directory. 
 
 ``` {bash}
 qiime feature-classifier extract-reads \
@@ -225,4 +225,26 @@ qiime feature-classifier extract-reads \
     --p-max-length 505 \
     --p-min-length 250 \
     --o-reads ref-seqs.qza
+```
+
+### Train classifier
+
+Next, the Niave bayes classifier is trained on the extracted reference sequences using SILVAs reference taxonomy database. Alternatively, on the [QIIME2 website](https://docs.qiime2.org/2020.8/data-resources/) there are already pre-trained classifier available.
+
+``` {bash}
+qiime feature-classifier fit-classifier-naive-bayes \
+    --i-reference-reads ref-seqs.qza \
+    --i-reference-taxonomy $SILVA_DB/silva-138-99-tax.qza \
+    --o-classifier classifier_naive_bayes.qza
+```
+
+### Classify reads
+
+This step will classify the representative sequences from the data using the taxonmic classifier to output a FeatureData object which hols taxonomical information to our rep-seqs.
+
+``` {bash}
+qiime feature-classifier classify-sklearn \
+    --i-classifier classifier_naive_bayes.qza \
+    --i-reads rep-seqs.qza \
+    --o-classification taxonomy.qza
 ```
