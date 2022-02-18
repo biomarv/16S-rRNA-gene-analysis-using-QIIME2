@@ -29,16 +29,16 @@ The first column in the metadata file has to be a unique identifier for the samp
 
 The rest of the metadata information are given by the experiment and can be of *categorical* or *numerical* type.
 
-| id | environment |
-| :------ | :---------- |
-| sample_01 | feaces |
-| sample_02 | feaces |
-| ... | ... |
-| sample_40 | water |
-| ... | ... | 
-| sample_50 | pos_con |
-| ... | ... | 
-| sample_55 | extr_control |
+| id | environment | diet | sampling_data | ... |
+| :------ | :---------- | :------ | :------ | :-----|
+| sample_01 | feaces | X | 2050-05-25 | ... |
+| sample_02 | feaces | Y |2050-05-25 | ... |
+| ... | ... |... | ... | ... |
+| sample_40 | water | nA | 2050-05-25 | ... |
+| ... | ... | ... | ... | ... |
+| sample_50 | pos_con | nA | 2050-05-25 | ... |
+| ... | ... | ... | ... | ... | 
+| sample_55 | extr_control | nA | 2050-05-25 | ... |
 
 More information about metadata in qiime2 [here](https://docs.qiime2.org/2021.4/tutorials/metadata/)
 The file has to be saved as a tab-separated value format (.tsv) and can then be transformed into a qiime artifact file via the following command.
