@@ -12,48 +12,7 @@ Create project folder in your home directory. In your project folder create a fo
 mkdir ~/PROJECT_NAME
 mkdir ~/PROJECT_NAME/raw_data 
 cd PROJECT_NAME/
-ls
-```
-
-### Metadata
-
-
-### Set up your metadata file
-
-First, a metadata file has to be generated. Most of the times it already exist and just needs some modification or file transformation so `qiime` can handle it and integrate it in the pipeline. 
-The first column in the metadata file has to be a unique identifier for the sample and should be one of the following values:
-
-+ id
-+ sampleid
-+ sample-id
-
-The rest of the metadata information are given by the experiment and can be of *categorical* or *numerical* type.
-
-| id | environment | diet | sampling_data | ... |
-| :------ | :---------- | :------ | :------ | :-----|
-| sample_01 | feaces | X | 2050-05-25 | ... |
-| sample_02 | feaces | Y |2050-05-25 | ... |
-| ... | ... |... | ... | ... |
-| sample_40 | water | nA | 2050-05-25 | ... |
-| ... | ... | ... | ... | ... |
-| sample_50 | pos_con | nA | 2050-05-25 | ... |
-| ... | ... | ... | ... | ... | 
-| sample_55 | extr_control | nA | 2050-05-25 | ... |
-
-More information about metadata in qiime2 [here](https://docs.qiime2.org/2021.4/tutorials/metadata/)
-The file has to be saved as a tab-separated value format (.tsv) and can then be transformed into a qiime artifact file via the following command.
-
-```{bash}
-qiime metadata tabulate \
-  --m-input-file metadata.tsv \
-  --o-visualization tabulated-sample-metadata.qzv
-```
-Assign your metadata file to a variable. This file will be used more often, so using a variable comes in handy. The content of variable is accessed with a `$` prefix. 
-
-```{bash}
-METADATA="/home/user/PROJECT_NAME/metadata.tsv"
-echo $METADATA
-`ls`
+pwd
 ```
 
 ### Rawdata
@@ -106,7 +65,46 @@ Working in this conda environment makes sure, that the correct version of Python
 
 To find out more about QIIME2 use the well documented source <https://docs.qiime2.org/2021.8/> with several useful tutorials. Clearly, we are using QIIME2 in the command-line interface (CLI), although there is a graphical use available. 
 Indispensible, is knowledge about the difference between `.qza` and `.qzv`, the qiime artifacts. The ladder describes any file content that can be visualized. The `.qza` ending is a file were data is stored, processed in and QIIME knows about type and format. Those are the files we are dealing with when processing our data. While in bioinformatics a lot of different file types exist which one needs to handle, this is one advantage of QIIME, so the user can focus on data processing. Another advantage of QIIME2 is, that every file keeps track of its provenance, so the workflow of the pipeline is always tracked. 
-There are plenty tools to manipulate data and the first to begin with is important our data into a QIIME2 artifact:
+There are plenty of tools within qiime to manipulate data and the first to begin with is to import our data into a QIIME2 artifact. But first a metadatafile is needed.
+
+### Set up your metadata file
+
+First, a metadata file has to be generated. Most of the times it already exist and just needs some modification or file transformation so `qiime` can handle it and integrate it in the pipeline. 
+The first column in the metadata file has to be a unique identifier for the sample and should be one of the following values:
+
++ id
++ sampleid
++ sample-id
+
+The rest of the metadata information are given by the experiment and can be of *categorical* or *numerical* type.
+
+| id | environment | diet | sampling_data | ... |
+| :------ | :---------- | :------ | :------ | :-----|
+| sample_01 | feaces | X | 2050-05-25 | ... |
+| sample_02 | feaces | Y |2050-05-25 | ... |
+| ... | ... |... | ... | ... |
+| sample_40 | water | nA | 2050-05-25 | ... |
+| ... | ... | ... | ... | ... |
+| sample_50 | pos_control | nA | 2050-05-25 | ... |
+| ... | ... | ... | ... | ... | 
+| sample_55 | extr_control | nA | 2050-05-25 | ... |
+
+More information about metadata in qiime2 [here](https://docs.qiime2.org/2021.4/tutorials/metadata/)
+The file has to be saved as a tab-separated value format (.tsv) and can then be transformed into a qiime artifact file via the following command.
+
+
+```{bash}
+qiime metadata tabulate \
+  --m-input-file metadata.tsv \
+  --o-visualization tabulated-sample-metadata.qzv
+```
+Assign your metadata file to a variable. This file will be used more often, so using a variable comes in handy. The content of variable is accessed with a `$` prefix. 
+
+```{bash}
+METADATA="/home/user/PROJECT_NAME/metadata.tsv"
+echo $METADATA
+ls
+```
 
 ### Import data
 
@@ -118,7 +116,7 @@ qiime tools import \
     --input-path $HOME/PROJECT_NAME/raw_data \
     --output-path /qiime_files/demux_paired_end.qza
 ```
-The tools package has plenty functions to manipulate QIIME2 files. To find out more about its function you can use
+The `tools` package has plenty functions to manipulate QIIME2 files. To find out more about its function you can use
 ``` {bash}
 qiime tools --help
 ```
