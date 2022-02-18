@@ -1,4 +1,4 @@
-# Qiime2 pipeline MetaBac Lab
+# 16S rRNA Pipeline
 
 ## Introduction
 
