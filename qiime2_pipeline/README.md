@@ -17,41 +17,10 @@ ls
 
 ### Metadata
 
-
-### Set up your metadata file
-
-First, a metadata file has to be generated. Most of the times it already exist and just needs some modification or file transformation so `qiime` can handle it and integrate it in the pipeline. 
-The first column in the metadata file has to be a unique identifier for the sample and should be one of the following values:
-
-+ id
-+ sampleid
-+ sample-id
-
-The rest of the metadata information are given by the experiment and can be of *categorical* or *numerical* type.
-
-| id | environment |
-| :------ | :---------- |
-| sample_01 | feaces |
-| sample_02 | feaces |
-| ... | ... |
-| sample_40 | water |
-| ... | ... | 
-| sample_50 | pos_con |
-| ... | ... | 
-| sample_55 | extr_control |
-
-More information about metadata in qiime2 [here](https://docs.qiime2.org/2021.4/tutorials/metadata/)
-The file has to be saved as a tab-separated value format (.tsv) and can then be transformed into a qiime artifact file via the following command.
-
-```{bash}
-qiime metadata tabulate \
-  --m-input-file metadata.tsv \
-  --o-visualization tabulated-sample-metadata.qzv
-```
 Assign your metadata file to a variable. This file will be used more often, so using a variable comes in handy. The content of variable is accessed with a `$` prefix. 
 
 ```{bash}
-METADATA="/home/user/PROJECT_NAME/metadata.tsv"
+METADATA="/home/user/PROJECT_NAME/metadata-file.tsv"
 echo $METADATA
 `ls`
 ```
@@ -105,8 +74,8 @@ Working in this conda environment makes sure, that the correct version of Python
 ## QIIME2
 
 To find out more about QIIME2 use the well documented source <https://docs.qiime2.org/2021.8/> with several useful tutorials. Clearly, we are using QIIME2 in the command-line interface (CLI), although there is a graphical use available. 
-Indispensible, is knowledge about the difference between `.qza` and `.qzv`, the qiime artifacts. The ladder describes any file content that can be visualized. The `.qza` ending is a file were data is stored, processed in and QIIME knows about type and format. Those are the files we are dealing with when processing our data. While in bioinformatics a lot of different file types exist which one needs to handle, this is one advantage of QIIME, so the user can focus on data processing. Another advantage of QIIME2 is, that every file keeps track of its provenance, so the workflow of the pipeline is always tracked. 
-There are plenty tools to manipulate data and the first to begin with is important our data into a QIIME2 artifact:
+Indispensible, is knowledge about the difference between `.qza` and `.qzv`, the qiime artifacts. The ladder describes any file content that can be visualized. The `.qza` ending is a file were data is stored, processed in and QIIME knows about type and format. Those are the files we are dealing with when processing our data. While in bioinformatics lots of different file types exist which one needs to handle, this is one advantage of QIIME, so the user can focus on data processing. Another advantage of QIIME2 is, that every file keeps track of its provenance, so the workflow of the pipeline is always tracked. 
+There are plenty tools to manipulate data and the first to begin with is importan our data into a QIIME2 artifact:
 
 ### Import data
 
@@ -166,11 +135,9 @@ qiime cutadapt trim-paired \
 ```
 To find out more about the primer options of this command have look at `qiime cutadapt trim-primer --help`. In this example data set the V3/V4 region of the 16S rRNA was used. The additional two primers are the reversed complements of the V3/V4 primer pair. The option `--p-discard-untrimmed` excludes reads in which no primers were found. The last option redirects the standard output (stdout) into a logfile. The output can also be visualized with the `demux summarize` command. 
 
-*If another hypervariable region was sequences, the corresponding primer pairs needs to be adjusted!*
-
 ## Denoising
 
-To denoise the reads qiime offers two packages, deblur and DADA2. Both pipelines end up with amplicon sequence variants (ASV). In this tutorial the DADA2 package will be used. You can find out more about the package in this [tutorial](https://benjjneb.github.io/dada2/) or have a look at the [publication](https://pubmed.ncbi.nlm.nih.gov/27214047/). The general purpose of both is to correct for errors, filter phiX reads and chimeric sequences. To set the `trunc` option one has to inspect the quality plot from the `demux_cutadapt.qza` file. 
+To denoise the reads qiime offers two packages, deblur and DADA2. Both pipelines end up with amplicon sequence variants (ASV). In this tutorial the DADA2 package will be used. Your can find out more about the package in this [tutorial](https://benjjneb.github.io/dada2/) or have a look at the [publication](https://pubmed.ncbi.nlm.nih.gov/27214047/). The general purpose of both is to correct for errors, filter phiX reads and chimeric sequences. To set the `trunc` option one has to inspect the quality plot from the `demux_cutadapt.qza` file. 
 
 ```{bash}
 qiime dada2 denoise-paired \
