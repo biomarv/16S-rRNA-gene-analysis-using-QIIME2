@@ -37,7 +37,6 @@ The underscore separated filename is composed of:
 ### FastQC
 ```{bash}
 fastqc *R1_001.fastq.gz *R2_001.fastq.gz -o /fastqc_results
-multiqc ./fastqc_results/*
 ```
 
 When checking the quality reports of FastQC, one must be aware of the origin and processing of the data. The evaluation of the quality is somewhat biased to a purpose. Looking into an `.html` report, FastQC comes with 11 checkpoints, hightling if failed or passed not considering the input data. Starting with `basic statistics` Encoding: Illumina 1.9 tells us, quality format is encoded in `Phred+33`. Total Sequence count should be congruent in forward and reverse reads. 
@@ -52,7 +51,7 @@ When checking the quality reports of FastQC, one must be aware of the origin and
 Additionally, you can check all fastQC-reports with multiQC, which incorporates all reports into a single report. By moving into the report-folder multiqc only needs an input folder as an argument. For further options use `multiqc -h`
 
 ```{bash}
-multiqc .
+multiqc ./fastqc_results/*
 ```
 
 ### Set the environment 
