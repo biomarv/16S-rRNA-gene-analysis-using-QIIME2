@@ -35,6 +35,10 @@ The underscore separated filename is composed of:
 | 001 | Last segment is set number: al+ ways 001 + + + + + |
 
 ### FastQC
+```{bash}
+fastqc *R1_001.fastq.gz *R2_001.fastq.gz -o /fastqc_results
+multiqc ./fastqc_results/*
+```
 
 When checking the quality reports of FastQC, one must be aware of the origin and processing of the data. The evaluation of the quality is somewhat biased to a purpose. Looking into an `.html` report, FastQC comes with 11 checkpoints, hightling if failed or passed not considering the input data. Starting with `basic statistics` Encoding: Illumina 1.9 tells us, quality format is encoded in `Phred+33`. Total Sequence count should be congruent in forward and reverse reads. 
 
@@ -116,9 +120,10 @@ qiime tools import \
     --input-path $HOME/PROJECT_NAME/raw_data \
     --output-path /qiime_files/demux_paired_end.qza
 ```
+
 The `tools` package has plenty functions to manipulate QIIME2 files. To find out more about its function you can use
 ``` {bash}
-qiime tools --help
+qiime tools --help  
 ```
 The tool needs three required inputs: the `--input-path` to tell the program were the data is located, the `--output-path` were to output the QIIME2 artifact and the `--type` of data. In this case, we are dealing with paired-end sequencing data which also has qulity information. There are several data types which we can look up using:
 ``` {bash}
